@@ -2,6 +2,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 * Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
+* Refer: https://www.npmjs.com/package/react-native-drag-drop-and-swap
 
 ## :arrow_up: How to Setup
 
