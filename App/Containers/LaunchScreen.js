@@ -15,13 +15,13 @@ export default class LaunchScreen extends Component {
 
     this.onDrop = this.onDrop.bind(this);
     this.onHover = this.onHover.bind(this);
-    this.onHold = this.onHold.bind(this);
 
     this.state = {
       alphabets: alphaData,
       hoverData: {},
       dropData: {},
-      hoverDataIndex: null
+      hoverDataIndex: null,
+      holds: [{}, {}],
     };
   }
 
@@ -38,13 +38,18 @@ export default class LaunchScreen extends Component {
     this.setState({ alphabets });
   }
 
-  onHold(e) {
+  onHold(e, index) {
     let data = this.state.alphabets || [];
     let alphabets = data.filter((item, i) => e.id !== item.id)
-    if (this.state.hold && this.state.hold.id) {
-      alphabets.push(this.state.hold);
+
+    if (this.state.holds[index] && this.state.holds[index].id) {
+      alphabets.push(this.state.holds[index]);
     }
-    this.setState({ alphabets, hold: e })
+
+    let holds = this.state.holds;
+    holds[index] = e;
+
+    this.setState({ alphabets, holds })
   }
 
   onHover(hoverData, hoverDataIndex) {
@@ -65,11 +70,11 @@ export default class LaunchScreen extends Component {
                 justifyContent: "space-around"
               }}
             >
-              <DropZone onDrop={this.onHold}>
-                <MyDropZoneContent hold={this.state.hold} />
+              <DropZone onDrop={(e) => this.onHold(e, 0)}>
+                <MyDropZoneContent hold={this.state.holds[0]} />
               </DropZone>
-              <DropZone onDrop={e => console.log("Dropped it on area 2", e)}>
-                <MyDropZoneContent />
+              <DropZone onDrop={(e) => this.onHold(e, 1)}>
+                <MyDropZoneContent hold={this.state.holds[1]} />
               </DropZone>
             </View>
           </View>
@@ -197,7 +202,7 @@ class MyDropZoneContent extends Component {
         }}
       >
         <View>
-          <Text style={{fontWeight:"bold", fontSize: 14, fontWeight: 'bold'}}>{this.props.hold ? this.props.hold.data : "__________"}</Text>
+          <Text style={{fontWeight:"bold", fontSize: 14, fontWeight: 'bold'}}>{this.props.hold.data}</Text>
         </View>
       </View>
     );
